@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Factories.Shapes;
 
-namespace Factories.Shapes
+namespace Factories.JustFactory
 {
     public interface IShapesFactory
     {

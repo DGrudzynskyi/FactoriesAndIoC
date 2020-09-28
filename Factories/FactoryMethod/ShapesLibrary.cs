@@ -12,6 +12,11 @@ namespace Factories.FactoryMethod
             Shapes = new List<IShape>();
         }
 
+        public double GetTotalArea()
+        {
+            return Shapes.Sum(x => x.Area());
+        }
+
         public IShape CreateShape(string shape, params string[] shapeArguments)
         {
             IShape newShape = null;
@@ -40,11 +45,6 @@ namespace Factories.FactoryMethod
                 this.Shapes.Add(newShape);
             }
             return newShape;
-        }
-
-        public double GetTotalArea()
-        {
-            return Shapes.Sum(x => x.Area());
         }
     }
 }

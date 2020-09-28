@@ -1,4 +1,4 @@
-﻿using Factories.AbstractFactory;
+﻿using Factories.JustFactory;
 using Factories.Shapes;
 using Ninject;
 using System;
@@ -16,9 +16,20 @@ namespace Factories
         public static void RegisterServices() {
             Kernel = new StandardKernel();
 
+            // при такой привязке новый екземпляр RectangleAreaEquation создаётся каждый раз при необходимости получить IRectangleAreaEquation 
             Kernel.Bind<IRectangleAreaEquation>().To<RectangleAreaEquation>();
-            Kernel.Bind<IEllipseAreaEquation>().To<EllipseAreaEquation>();
+
+            // при такой привязке при необходимости получить IEllipseAreaEquation вызывается метод, который возвращает обьект конкретного класса, 
+            // реализующего IEllipseAreaEquation 
+            Kernel.Bind<IEllipseAreaEquation>().ToMethod(ctx => {
+                return new EllipseAreaEquation();
+            });
+
+
             Kernel.Bind<IShapesFactory>().To<ShapesFactory>();
+
+            // в єтом случае будет создан только лишь один екземпляр ShapesLibrary, сколько бы раз мы не запрашивали IShapesLibrary
+            Kernel.Bind<IShapesLibrary>().To<ShapesLibrary>().InSingletonScope();
 
             Kernel.Bind<Func<string[], IShape>>().ToMethod(ctx =>
             {
